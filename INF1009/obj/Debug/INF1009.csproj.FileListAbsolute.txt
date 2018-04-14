@@ -1,0 +1,10 @@
+C:\Users\Patrick\Desktop\INF1009\INF1009\obj\Debug\INF1009.csprojResolveAssemblyReference.cache
+C:\Users\Patrick\Desktop\INF1009\INF1009\obj\Debug\INF1009.Form1.resources
+C:\Users\Patrick\Desktop\INF1009\INF1009\obj\Debug\INF1009.Properties.Resources.resources
+C:\Users\Patrick\Desktop\INF1009\INF1009\obj\Debug\INF1009.csproj.GenerateResource.Cache
+C:\Users\Patrick\Desktop\INF1009\INF1009\obj\Debug\INF1009.csproj.CoreCompileInputs.cache
+C:\Users\Patrick\Desktop\INF1009\INF1009\bin\Debug\INF1009.exe.config
+C:\Users\Patrick\Desktop\INF1009\INF1009\bin\Debug\INF1009.exe
+C:\Users\Patrick\Desktop\INF1009\INF1009\bin\Debug\INF1009.pdb
+C:\Users\Patrick\Desktop\INF1009\INF1009\obj\Debug\INF1009.exe
+C:\Users\Patrick\Desktop\INF1009\INF1009\obj\Debug\INF1009.pdb

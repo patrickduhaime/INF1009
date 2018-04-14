@@ -1,0 +1,6 @@
+N_CONNECT.ind  source Address :11 dest Address: 1
+N_DATA.ind  transferring network data
+N_CONNECT.ind  source Address :15 dest Address: 47
+N_DISCONNECT.ind  message: Closed by Client
+N_DATA.ind  transferring network data
+N_DISCONNECT.ind  message: Closed by Client

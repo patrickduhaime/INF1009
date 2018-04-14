@@ -1,0 +1,11 @@
+N_CONNECT.req 11 1
+N_DATA.req Start testing INF1009 program written by Patx 
+N_CONNECT.req 15 47
+N_DATA.req negative Acknoledgment 
+N_DISCONNECT.req 15
+N_CONNECT.req 27 200
+N_CONNECT.req 500 200
+N_CONNECT.req 19 9
+N_DATA.req multiple of 19 - no awnser 
+N_CONNECT.req 13 12
+N_DATA.req multiple of 13 - connection declined by destination 
