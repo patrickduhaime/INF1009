@@ -20,7 +20,7 @@ namespace INF1009
     public class Packet
     {
 
-        public static PACKET encapsulateCall(byte connectionNumber, byte sourceAddr, byte destAddr)
+        public static PACKET encapsulateRequest(byte connectionNumber, byte sourceAddr, byte destAddr)
         {
             PACKET currentPacket = new PACKET();
 
@@ -292,7 +292,7 @@ namespace INF1009
             else if (isEqualBitArrays(type, connectionEstablished))
                 return decapConnectionEstablished(currentPacket);
             else if (isEqualBitArrays(type, connectionInit))
-                return decapCall(currentPacket);
+                return decapRequest(currentPacket);
             else if (!type[0])
                 return decapData(currentPacket);
 
@@ -399,7 +399,7 @@ namespace INF1009
             return currentNpdu;
         }
 
-        private static Npdu decapCall(PACKET currentPacket)
+        private static Npdu decapRequest(PACKET currentPacket)
         {
             Npdu currentNpdu = new Npdu();
 

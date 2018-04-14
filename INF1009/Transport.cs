@@ -4,6 +4,19 @@ using System.Collections;
 
 namespace INF1009
 {
+    public struct Npdu
+    {
+        public string type;
+        public string sourceAddr;
+        public string destAddr;
+        public string routeAddr;
+        public string data;
+        public string target;
+        public string connection;
+        public int ps, pr;
+        public bool flag;
+    }
+
     class Transport
     {
 
@@ -185,17 +198,5 @@ namespace INF1009
 
             }
         }
-    }
-    public struct Npdu
-    {
-        public string type;
-        public string sourceAddr;
-        public string destAddr;
-        public string routeAddr;
-        public string data;
-        public string target;
-        public string connection;
-        public int ps, pr;
-        public bool flag;
     }
 }

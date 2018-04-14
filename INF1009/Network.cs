@@ -190,7 +190,7 @@ namespace INF1009
                                                     npdu2Transport.connection = outputNo[0].ToString();
                                                     network2Transport.Enqueue(npdu2Transport);
 
-                                                    packet4Processing = Packet.encapsulateCall(outputNo[0], sourceAddr[0], destAddr[0]);
+                                                    packet4Processing = Packet.encapsulateRequest(outputNo[0], sourceAddr[0], destAddr[0]);
                                                     string packetType = "request";
                                                     byte[] sending = Packet.encapsulateBytes(packet4Processing, packetType);
 
