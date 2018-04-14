@@ -7,9 +7,6 @@ namespace INF1009
 {
     public partial class Form1 : Form
     {
-
-        delegate void UIDisplayText(string text);
-
         public static Form1 _UI;
         private static Queue N2TQ = new Queue();
         private static Queue N2TQS = Queue.Synchronized(N2TQ);
@@ -23,6 +20,7 @@ namespace INF1009
         private Network network = new Network(ref T2NQS, ref N2TQS, ref PP2NQS, ref N2PPQS);
         private Transport transport = new Transport(ref T2NQS, ref N2TQS);
         private Thread networkWriteThread, transportWriteThread, transportReadThread, networkReadThread, processingThread;
+        delegate void UIDisplayText(string text);
 
         public Form1()
         {
@@ -86,9 +84,39 @@ namespace INF1009
             N2TQS.Clear();
             PP2NQS.Clear();
             N2PPQS.Clear();
-            network.Init();
-            transport.Init();
-            processing.Init();
+            network.Start();
+            transport.Start();
+        }
+
+        private void buttonReset_Click(object sender, EventArgs e)
+        {
+            rtbL_ecr.Clear();
+            rtbL_lec.Clear();
+            rtbS_ecr.Clear();
+            rtbS_lec.Clear();
+            reset();
+            network.resetFiles();
+            transport.resetFiles();
+        }
+
+        private void buttonQuit_Click(object sender, EventArgs e)
+        {
+            closeThreads();
+            this.Close();
+        }
+
+        private void form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            closeThreads();
+        }
+
+        public void closeThreads()
+        {
+            processingThread.Abort();
+            networkReadThread.Abort();
+            networkWriteThread.Abort();
+            transportReadThread.Abort();
+            transportWriteThread.Abort();
         }
 
         public void write2L_lec(string text)
@@ -120,22 +148,6 @@ namespace INF1009
             }
         }
 
-        private void buttonReset_Click(object sender, EventArgs e)
-        {
-            rtbL_ecr.Clear();
-            rtbL_lec.Clear();
-            rtbS_ecr.Clear();
-            rtbS_lec.Clear();
-            reset();
-            network.resetFiles();
-            transport.resetFiles();
-        }
-
-        private void buttonQuit_Click(object sender, EventArgs e)
-        {
-            closeThreads();
-            this.Close();
-        }
 
         public void write2S_ecr(string text)
         {
@@ -163,20 +175,6 @@ namespace INF1009
             {
                 rtbL_ecr.AppendText(txt);
             }
-        }
-
-        private void form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            closeThreads();
-        }
-
-        public void closeThreads()
-        {
-            processingThread.Abort();
-            networkReadThread.Abort();
-            networkWriteThread.Abort();
-            transportReadThread.Abort();
-            transportWriteThread.Abort();
         }
     }
 }

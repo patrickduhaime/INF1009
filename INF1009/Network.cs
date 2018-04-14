@@ -38,7 +38,7 @@ namespace INF1009
             writeFromTransport = new StreamWriter(fileFromTransport);
             file2Transport = new FileStream(L_lec, FileMode.OpenOrCreate, FileAccess.Write);
             write2Transport = new StreamWriter(file2Transport);
-            Init();
+            Start();
         }
 
         public void resetFiles()
@@ -47,7 +47,7 @@ namespace INF1009
             file2Transport.Position = 0;
         }
 
-        public void Init()
+        public void Start()
         {
             Random rnd = new Random();
 

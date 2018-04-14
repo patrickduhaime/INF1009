@@ -1,9 +1,11 @@
-Connection established 1793501103  connection number: 7
-source Address: 11  dest Address: 1  connection number: 7
-Connection established 686791828  connection number: 4
-source Address: 15  dest Address: 47  connection number: 4
+Connection established 1378618666  connection number: 2
+source Address: 11  dest Address: 1  connection number: 2
+Connection established 2069583739  connection number: 1
+source Address: 15  dest Address: 47  connection number: 1
+Connection established 226911061  connection number: 5
+Connection established 709667807  connection number: 4
 Disconnect:  Closed by Client connection number: 4
-Connection established 1826571999  connection number: 0
-
-Connection established 946505317  connection number: 5
+sconnect:  Closed by Client connection number: 2
+Connection established 542555949  connection number: 5
+source Address: 244  dest Address: 62  connection number: 5
 Disconnect:  Closed by Client connection number: 5

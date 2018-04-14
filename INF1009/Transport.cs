@@ -30,7 +30,7 @@ namespace INF1009
 
             connected = new ArrayList();
             end = false;
-            Init();
+            Start();
         }
 
         public void resetFiles()
@@ -42,7 +42,7 @@ namespace INF1009
             outputFile.Position = 0;
         }
 
-        public void Init()
+        public void Start()
         {
             writer.Flush();
             msg = "";

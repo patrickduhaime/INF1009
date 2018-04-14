@@ -15,13 +15,8 @@ namespace INF1009
             this.network2PacketProcessing = network2PacketProcessing;
 
             packets = new ArrayList();
-            Init();
         }
 
-        public void Init()
-        {
-
-        }
 
         public void startProcessing()
         {
