@@ -8,6 +8,7 @@ namespace INF1009
     public partial class Form1 : Form
     {
         public static Form1 _UI;
+        private int nbclk = 0;
         private static Queue N2TQ = new Queue();
         private static Queue N2TQS = Queue.Synchronized(N2TQ);
         private static Queue T2NQ = new Queue();
@@ -32,6 +33,7 @@ namespace INF1009
             transportReadThread = new Thread(new ThreadStart(network.transportRead));
             processingThread = new Thread(new ThreadStart(processing.startProcessing));
         }
+
 
         private void openThreads()
         {
@@ -58,6 +60,9 @@ namespace INF1009
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
+            nbclk++;
+            if (nbclk > 6)
+                buttonStart.Enabled = false;
             try
             {
                 reset();
@@ -90,6 +95,8 @@ namespace INF1009
 
         private void buttonReset_Click(object sender, EventArgs e)
         {
+            buttonStart.Enabled = true;
+            nbclk = 0;
             rtbL_ecr.Clear();
             rtbL_lec.Clear();
             rtbS_ecr.Clear();

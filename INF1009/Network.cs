@@ -101,18 +101,18 @@ namespace INF1009
                                         accepted = true;
                                         break;
                                     case "N_DISCONNECT.ind":
-                                        msg = "N_DISCONNECT.ind  message: " + _4Transport.target;
+                                        msg = "N_DISCONNECT " + _4Transport.target;
                                         network2Transport.Enqueue(_4Transport);
                                         accepted = true;
                                         disconnected = true;
                                         break;
                                     case "N_CONNECT.ind":
-                                        msg = "N_CONNECT.ind  source Address :" + _4Transport.sourceAddr + " dest Address: " + _4Transport.destAddr;
+                                        msg = "N_CONNECT  dest Address :" + _4Transport.destAddr + " source Address: " + _4Transport.sourceAddr;
                                         network2Transport.Enqueue(_4Transport);
                                         accepted = true;
                                         break;
                                     case "N_DATA.ind":
-                                        msg = "N_DATA.ind  transferring network data";
+                                        msg = "N_DATA  transferring network data";
                                         receivedData += _4Transport.data;
                                         if (!_4Transport.flag)
                                         {
@@ -160,7 +160,7 @@ namespace INF1009
                                     {
                                         case "N_CONNECT.req":
                                             {
-                                                msg = "N_CONNECT.req " + transportNpdu.sourceAddr + ' ' + transportNpdu.destAddr;
+                                                msg = "N_CONNECT " + transportNpdu.destAddr + " " + transportNpdu.sourceAddr + " route: " + transportNpdu.routeAddr;
                                                 writeFromTransport.WriteLine(msg);
                                                 Form1._UI.write2L_lec(msg);
 
@@ -216,7 +216,7 @@ namespace INF1009
 
                                         case "N_DATA.req":
                                             {
-                                                msg = "N_DATA.req " + transportNpdu.data;
+                                                msg = "N_DATA " + transportNpdu.data;
                                                 writeFromTransport.WriteLine(msg);
                                                 Form1._UI.write2L_lec(msg);
 
@@ -246,7 +246,7 @@ namespace INF1009
                                             }
                                         case "N_DISCONNECT.req":
                                             {
-                                                msg = "N_DISCONNECT.req " + transportNpdu.routeAddr;
+                                                msg = "N_DISCONNECT " + transportNpdu.routeAddr;
                                                 writeFromTransport.WriteLine(msg);
                                                 Form1._UI.write2L_lec(msg);
 

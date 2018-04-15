@@ -1,12 +1,19 @@
-Connection established 314590454  connection number: 6
-source Address: 11  dest Address: 1  connection number: 6
-Connection established 908272  connection number: 0
-source Address: 15  dest Address: 47  connection number: 0
-: 1
-Connection established 226911061  connection number: 5
-Connection established 709667807  connection number: 4
-Disconnect:  Closed by Client connection number: 4
-sconnect:  Closed by Client connection number: 2
-Connection established 542555949  connection number: 5
-source Address: 244  dest Address: 62  connection number: 5
-Disconnect:  Closed by Client connection number: 5
+connection: 5 Connection established 
+connection: 5 dest Address: 1  source Address: 11
+connection: 5 Connection established 
+connection: 5 dest Address: 47  source Address: 15
+nnection: 3 dest Address: 47  source Address: 15
+connection: 3  disconnected Closed by Client
+ 1 Connection established 
+connection: 1  disconnected Closed by Client
+ed 
+connection: 2 dest Address: 12  source Address: 11
+
+on: 5 dest Address: 12  source Address: 11
+connection: 5  disconnected Closed by Client
+ 11  route Address: 
+connected Closed by Client
+ection: 4 Connection established 32360420
+connection: 4 dest Address: 58  source Address: 11
+connection: 4  disconnected Closed by Client
+: 5  disconnected Closed by Client

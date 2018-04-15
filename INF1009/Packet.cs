@@ -19,7 +19,6 @@ namespace INF1009
 
     public class Packet
     {
-
         public static PACKET encapsulateRequest(byte connectionNumber, byte sourceAddr, byte destAddr)
         {
             PACKET currentPacket = new PACKET();
@@ -37,6 +36,7 @@ namespace INF1009
 
             return currentPacket;
         }
+
         public static PACKET encapsulateConnectionEstablished(byte connectionNumber, byte sourceAddr, byte destAddr)
         {
             PACKET currentPacket = new PACKET();
@@ -271,6 +271,7 @@ namespace INF1009
 
             return currentPacket;
         }
+
         public static Npdu decapPacket(PACKET currentPacket)
         {
             Npdu _4Transport = new Npdu();

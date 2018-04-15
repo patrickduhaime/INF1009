@@ -1,13 +1,21 @@
-N_CONNECT.req 11 1
-N_DATA.req Start testing INF1009 program written by Patx 
-N_CONNECT.req 15 47
-N_DATA.req negative Acknoledgment 
-N_CONNECT.req 27 200
-N_CONNECT.req 500 200
-N_CONNECT.req 19 9
-N_DATA.req multiple of 19 - no awnser 
-N_CONNECT.req 13 12
-N_CONNECT.req 13 12
-N_CONNECT.req 244 62
-N_DATA.req This is the last test, this program was written for the recognition of the achievements of Patrick Duhaime for the course INF1009 ...  Sed quid est quod in hac causa maxime homines admirentur et reprehendant meum consilium, cum ego idem antea multa decreverim, que magis ad hominis dignitatem quam ad rei publicae necessitatem pertinerent? Supplicationem quindecim dierum decrevi sententia mea 
-N_DISCONNECT.req 244
+N_CONNECT 1 11 route: 1
+N_DATA Start testing INF1009 
+N_CONNECT 47 15 route: 47
+N_DATA negative Acknoledgment 
+Acknoledgment 
+N_DISCONNECT 47
+route: 254
+N_CONNECT 200 500 route: -1
+N_CONNECT 9 19 route: 9
+N_CONNECT 12 13 route: 12
+of 13 - connection declined by destination 
+ltiple of 13 - connection declined by destination 
+
+ destination 
+N_DISCONNECT 12
+tination 
+N_DISCONNECT 12
+ition of the achievements of Patrick Duhaime for the course INF1009 ...  
+N_DISCONNECT 58
+ ...  Sed quid est quod in hac causa maxime homines admirentur et reprehendant meum consilium, cum ego idem antea multa decreverim, que magis ad hominis dignitatem quam ad rei publicae necessitatem pertinerent? Supplicationem quindecim dierum decrevi sententia mea 
+N_DISCONNECT 58

@@ -6,7 +6,8 @@ namespace INF1009
 {
     class Processing
     {
-        private Queue packetProcessing2Network, network2PacketProcessing;
+        private Queue packetProcessing2Network;
+        private Queue network2PacketProcessing;
         private ArrayList packets;
 
         public Processing(ref Queue packetProcessing2Network, ref Queue network2PacketProcessing)
@@ -17,7 +18,6 @@ namespace INF1009
             packets = new ArrayList();
         }
 
-
         public void startProcessing()
         {
             while (true)
@@ -26,7 +26,6 @@ namespace INF1009
                     networkRead();
             }
         }
-
 
         public void networkRead()
         {
