@@ -27,10 +27,13 @@ namespace INF1009
     class Transport
     {
         private const string S_lec = "s_lec.txt";
+        private const string T_lec = "t_lec.txt";
         private const string S_ecr = "s_ecr.txt";
         private StreamReader reader;
+        private StreamReader T_reader;
         private StreamWriter writer;
         private FileStream inputFile;
+        private FileStream T_inputFile;
         private FileStream outputFile;
         private Queue transport2Network;
         private Queue network2Transport;
@@ -77,6 +80,51 @@ namespace INF1009
             connected.Clear();
             reader.DiscardBufferedData();
         }
+
+        /**
+        * Methode getRandomInt qui retourne une valeur aleatoire entre 
+        * min et max fournis en parametres.
+        */
+        private int getRandomInt(int min, int max)
+        {
+            Random rnd = new Random();
+            return rnd.Next(min, max);
+        }
+
+        /**
+        * Methode setDestAddress qui retourne une string
+        * contenant une adresse aleatoire entre 0 et 249.
+        */
+        public string setDestAddress()
+        {
+            string result = null;
+
+            int dest = getRandomInt(0, 249);
+            result = "" + dest;
+
+            return result;
+        }
+
+        /**
+        * Methode setSourceAddress qui retourne une string contenant
+        * une adresse aleatoire source entre 0 et 249 et
+        * differente de intDest fourni en parametre.
+        */
+        public string setSourceAddress(int intDest)
+        {
+            string result = null;
+            int source;
+
+            do
+            {
+                source = getRandomInt(0, 249);
+            } while(intDest == source);
+
+            result = "" + source;
+
+            return result;
+        }
+
         /**
         * Methode setRouteAddress definit une addresse de routage selon 
         * l'enonce de travail. Par contre cette adresse n'est pas utilise
@@ -87,39 +135,39 @@ namespace INF1009
         {
             string result = null;
 
-            int r = -1;
-            int s = Int32.Parse(source);
-            int d = Int32.Parse(dest);
+            int intResult = -1;
+            int intSource = Int32.Parse(source);
+            int intDest = Int32.Parse(dest);
 
-            if (s >= 0 && s <= 99)
+            if (intSource >= 0 && intSource <= 99)
             {
-                if (d >= 0 && d <= 99)
-                    r = d;
-                else if (d >= 100 && d <= 199)
-                    r = 255;
-                else if (d >= 200 && d <= 249)
-                    r = 254;
+                if (intDest >= 0 && intDest <= 99)
+                    intResult = intDest;
+                else if (intDest >= 100 && intDest <= 199)
+                    intResult = 255;
+                else if (intDest >= 200 && intDest <= 249)
+                    intResult = 254;
             }
-            else if (s >= 100 && s <= 199)
+            else if (intSource >= 100 && intSource <= 199)
             {
-                if (d >= 0 && d <= 99)
-                    r = 250;
-                else if (d >= 100 && d <= 199)
-                    r = d;
-                else if (d >= 200 && d <= 249)
-                    r = 253;
+                if (intDest >= 0 && intDest <= 99)
+                    intResult = 250;
+                else if (intDest >= 100 && intDest <= 199)
+                    intResult = intDest;
+                else if (intDest >= 200 && intDest <= 249)
+                    intResult = 253;
             }
-            else if (s >= 200 && s <= 249)
+            else if (intSource >= 200 && intSource <= 249)
             {
-                if (d >= 0 && d <= 99)
-                    r = 251;
-                else if (d >= 100 && d <= 199)
-                    r = 252;
-                else if (d >= 200 && d <= 249)
-                    r = d;
+                if (intDest >= 0 && intDest <= 99)
+                    intResult = 251;
+                else if (intDest >= 100 && intDest <= 199)
+                    intResult = 252;
+                else if (intDest >= 200 && intDest <= 249)
+                    intResult = intDest;
             }
 
-            result = result + r;
+            result = result + intResult;
             return result;
         }
 
@@ -184,6 +232,67 @@ namespace INF1009
                     end = true;
                 }
             }
+        }
+
+        public void networkTest()
+        {
+
+            T_inputFile = new FileStream(T_lec, FileMode.OpenOrCreate, FileAccess.Read);
+            T_reader = new StreamReader(T_inputFile);
+
+            string lineRead;
+            Npdu networkNNpdu;
+            string[] settings;
+            bool valid, end = false;
+
+            while (!end && !disconnect)
+            {
+                if ((lineRead = T_reader.ReadLine()) != null)
+                {
+                    networkNNpdu = new Npdu();
+                    try
+                    {
+                        valid = false;
+                        settings = lineRead.Split(' ');
+                        Form1._UI.write2S_lec(lineRead);
+
+                        if (settings[0] == "N_CONNECT")
+                        {
+                            networkNNpdu.type = "N_CONNECT.req";
+                            networkNNpdu.destAddr = settings[1];
+                            networkNNpdu.sourceAddr = settings[2];
+                            networkNNpdu.routeAddr = setRouteAddress(settings[1], settings[2]);
+                            valid = true;
+                        }
+                        else if (settings[0] == "N_DATA")
+                        {
+                            networkNNpdu.type = "N_DATA.req";
+                            for (int i = 1; i < settings.Length; i++)
+                                networkNNpdu.data += settings[i] + " ";
+                            valid = true;
+                        }
+                        else if (settings[0] == "N_DISCONNECT")
+                        {
+                            networkNNpdu.type = "N_DISCONNECT.req";
+                            networkNNpdu.routeAddr = settings[1];
+                            valid = true;
+                            disconnect = true;
+                        }
+                        if (valid)
+                            transport2Network.Enqueue(networkNNpdu);
+                    }
+                    catch (ThreadAbortException)
+                    {
+
+                    }
+                }
+                else
+                {
+                    end = true;
+                }
+            }
+            T_reader.Close();
+            T_inputFile.Close();
         }
 
         /**

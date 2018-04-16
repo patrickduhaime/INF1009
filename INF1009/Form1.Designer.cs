@@ -39,6 +39,9 @@
             this.label_l_ecr = new System.Windows.Forms.Label();
             this.buttonReset = new System.Windows.Forms.Button();
             this.buttonQuit = new System.Windows.Forms.Button();
+            this.buttonGenerate = new System.Windows.Forms.Button();
+            this.richTextBoxGen = new System.Windows.Forms.RichTextBox();
+            this.buttonSend2File = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonStart
@@ -47,7 +50,7 @@
             this.buttonStart.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.buttonStart.Location = new System.Drawing.Point(703, 362);
             this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(101, 28);
+            this.buttonStart.Size = new System.Drawing.Size(158, 28);
             this.buttonStart.TabIndex = 0;
             this.buttonStart.Text = "Start/Resume";
             this.buttonStart.UseVisualStyleBackColor = true;
@@ -130,7 +133,7 @@
             this.buttonReset.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonReset.Location = new System.Drawing.Point(703, 405);
             this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(101, 28);
+            this.buttonReset.Size = new System.Drawing.Size(158, 28);
             this.buttonReset.TabIndex = 9;
             this.buttonReset.Text = "Reset";
             this.buttonReset.UseVisualStyleBackColor = true;
@@ -141,17 +144,50 @@
             this.buttonQuit.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonQuit.Location = new System.Drawing.Point(703, 453);
             this.buttonQuit.Name = "buttonQuit";
-            this.buttonQuit.Size = new System.Drawing.Size(101, 28);
+            this.buttonQuit.Size = new System.Drawing.Size(158, 28);
             this.buttonQuit.TabIndex = 10;
             this.buttonQuit.Text = "Quit";
             this.buttonQuit.UseVisualStyleBackColor = true;
             this.buttonQuit.Click += new System.EventHandler(this.buttonQuit_Click);
             // 
+            // buttonGenerate
+            // 
+            this.buttonGenerate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonGenerate.Location = new System.Drawing.Point(703, 132);
+            this.buttonGenerate.Name = "buttonGenerate";
+            this.buttonGenerate.Size = new System.Drawing.Size(158, 23);
+            this.buttonGenerate.TabIndex = 11;
+            this.buttonGenerate.Text = "Generate";
+            this.buttonGenerate.UseVisualStyleBackColor = true;
+            this.buttonGenerate.Click += new System.EventHandler(this.buttonGenerate_Click);
+            // 
+            // richTextBoxGen
+            // 
+            this.richTextBoxGen.Location = new System.Drawing.Point(703, 27);
+            this.richTextBoxGen.Name = "richTextBoxGen";
+            this.richTextBoxGen.Size = new System.Drawing.Size(158, 85);
+            this.richTextBoxGen.TabIndex = 12;
+            this.richTextBoxGen.Text = "";
+            // 
+            // buttonSend2File
+            // 
+            this.buttonSend2File.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSend2File.Location = new System.Drawing.Point(703, 171);
+            this.buttonSend2File.Name = "buttonSend2File";
+            this.buttonSend2File.Size = new System.Drawing.Size(158, 23);
+            this.buttonSend2File.TabIndex = 13;
+            this.buttonSend2File.Text = "Send to file";
+            this.buttonSend2File.UseVisualStyleBackColor = true;
+            this.buttonSend2File.Click += new System.EventHandler(this.buttonSend2File_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(814, 491);
+            this.ClientSize = new System.Drawing.Size(873, 491);
+            this.Controls.Add(this.buttonSend2File);
+            this.Controls.Add(this.richTextBoxGen);
+            this.Controls.Add(this.buttonGenerate);
             this.Controls.Add(this.buttonQuit);
             this.Controls.Add(this.buttonReset);
             this.Controls.Add(this.label_l_ecr);
@@ -184,6 +220,9 @@
         private System.Windows.Forms.Label label_l_ecr;
         private System.Windows.Forms.Button buttonReset;
         private System.Windows.Forms.Button buttonQuit;
+        private System.Windows.Forms.Button buttonGenerate;
+        private System.Windows.Forms.RichTextBox richTextBoxGen;
+        private System.Windows.Forms.Button buttonSend2File;
     }
 }
 

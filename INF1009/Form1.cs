@@ -9,6 +9,7 @@ namespace INF1009
     {
         public static Form1 _UI;
         private int nbclk = 0;
+        private int nbTest = 1;
         private static Queue N2TQ = new Queue();
         private static Queue N2TQS = Queue.Synchronized(N2TQ);
         private static Queue T2NQ = new Queue();
@@ -124,6 +125,27 @@ namespace INF1009
             networkWriteThread.Abort();
             transportReadThread.Abort();
             transportWriteThread.Abort();
+        }
+
+        private void buttonGenerate_Click(object sender, EventArgs e)
+        {
+            richTextBoxGen.Clear();
+            string dest = transport.setDestAddress();
+            int intDest = Int32.Parse(dest);
+            string source = transport.setSourceAddress(intDest);
+
+            richTextBoxGen.AppendText("N_CONNECT " + dest + " " + source + "\n");
+            richTextBoxGen.AppendText("N_DATA test no.: " + nbTest + "\n");
+            richTextBoxGen.AppendText("N_DISCONNECT " + dest + " " + source + "\n");
+        }
+
+        private void buttonSend2File_Click(object sender, EventArgs e)
+        {
+            richTextBoxGen.Clear();
+            nbTest++;
+
+            richTextBoxGen.SaveFile("t_lec.txt");
+            transport.networkTest();
         }
 
         public void write2L_lec(string text)

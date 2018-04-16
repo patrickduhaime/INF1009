@@ -4,13 +4,13 @@ N_CONNECT 47 15 route: 47
 N_DATA negative Acknoledgment 
 N_CONNECT 200 27 route: 254
 N_CONNECT 200 500 route: -1
+54
+N_CONNECT 200 500 route: -1
 N_CONNECT 9 19 route: 9
-N_CONNECT 12 13 route: 12
-awnser 
+N_DATA multiple of 19 - no awnser 
 N_DISCONNECT 9
 N_CONNECT 12 13 route: 12
-nation 
-ltiple of 13 - connection declined by destination 
+n declined by destination 
 
  destination 
 N_DISCONNECT 12
