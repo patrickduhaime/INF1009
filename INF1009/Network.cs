@@ -87,42 +87,44 @@ namespace INF1009
                                 byte[] received = (byte[])packetProcessing2Network.Dequeue();
                                 PACKET receivedPacket = Packet.decapBytes(received);
                                 Npdu _4Transport = Packet.decapPacket(receivedPacket);
-                                switch (_4Transport.type)
+                                if (_4Transport.type == "WrongPacketFormat")
                                 {
-                                    case "WrongPacketFormat":
-                                        msg = "Wrong Packet Format";
-                                        break;
-                                    case "NACK":
-                                        msg = "NACK  negative Acknowledgment  :" + receivedPacket.packetType.ToString();
-                                        rejected = true;
-                                        break;
-                                    case "ACK":
-                                        msg = "ACK  positive Acknowledgment :" + receivedPacket.packetType.ToString();
-                                        accepted = true;
-                                        break;
-                                    case "N_DISCONNECT.ind":
-                                        msg = "N_DISCONNECT " + _4Transport.target;
-                                        network2Transport.Enqueue(_4Transport);
-                                        accepted = true;
-                                        disconnected = true;
-                                        break;
-                                    case "N_CONNECT.ind":
-                                        msg = "N_CONNECT  dest Address :" + _4Transport.destAddr + " source Address: " + _4Transport.sourceAddr;
-                                        network2Transport.Enqueue(_4Transport);
-                                        accepted = true;
-                                        break;
-                                    case "N_DATA.ind":
-                                        msg = "N_DATA  transferring network data";
-                                        receivedData += _4Transport.data;
-                                        if (!_4Transport.flag)
-                                        {
-                                            _4Transport.data = receivedData;
-                                            network2Transport.Enqueue(_4Transport);
-                                        }
-                                        break;
-                                    default:
-                                        break;
+                                    msg = "Wrong Packet Format";
                                 }
+                                else if (_4Transport.type == "NACK")
+                                {
+                                    msg = "NACK  negative Acknowledgment  :" + receivedPacket.packetType.ToString();
+                                    rejected = true;
+                                }
+                                else if (_4Transport.type == "ACK")
+                                {
+                                    msg = "ACK  positive Acknowledgment :" + receivedPacket.packetType.ToString();
+                                    accepted = true;
+                                }
+                                else if(_4Transport.type == "N_DISCONNECT.ind")
+                                {
+                                    msg = "N_DISCONNECT " + _4Transport.target;
+                                    network2Transport.Enqueue(_4Transport);
+                                    accepted = true;
+                                    disconnected = true;
+                                }
+                                else if(_4Transport.type == "N_CONNECT.ind")
+                                {
+                                    msg = "N_CONNECT  dest Address :" + _4Transport.destAddr + " source Address: " + _4Transport.sourceAddr;
+                                    network2Transport.Enqueue(_4Transport);
+                                    accepted = true;
+                                }
+                                else if(_4Transport.type == "N_DATA.ind")
+                                {
+                                    msg = "N_DATA  transferring network data";
+                                    receivedData += _4Transport.data;
+                                    if (!_4Transport.flag)
+                                    {
+                                        _4Transport.data = receivedData;
+                                        network2Transport.Enqueue(_4Transport);
+                                    }
+                                }
+
                                 write2Transport.WriteLine(msg);
                                 Form1._UI.write2L_ecr(msg);
                             }
@@ -156,126 +158,120 @@ namespace INF1009
                                 if (transportNpdu.type != "N_CONNECT.req" && !connected) { }
                                 else
                                 {
-                                    switch (transportNpdu.type)
+                                    if (transportNpdu.type == "N_CONNECT.req")
+
                                     {
-                                        case "N_CONNECT.req":
+                                        msg = "N_CONNECT " + transportNpdu.destAddr + " " + transportNpdu.sourceAddr + " route: " + transportNpdu.routeAddr;
+                                        writeFromTransport.WriteLine(msg);
+                                        Form1._UI.write2L_lec(msg);
+
+                                        sourceAddr[0] = (byte)int.Parse(transportNpdu.sourceAddr);
+                                        destAddr[0] = (byte)int.Parse(transportNpdu.destAddr);
+                                        if (sourceAddr[0] % 27 == 0 || int.Parse(transportNpdu.sourceAddr) > 249 || int.Parse(transportNpdu.destAddr) > 249)
+                                        {
+                                            disconnected = true;
+                                            connected = false;
+
+                                            npdu2Transport = new Npdu();
+                                            npdu2Transport.type = "N_DISCONNECT.ind";
+                                            npdu2Transport.routeAddr = respAddr.ToString();
+                                            npdu2Transport.target = "00000010";
+                                            npdu2Transport.connection = "255";
+                                            network2Transport.Enqueue(npdu2Transport);
+                                        }
+                                        else
+                                        {
+                                            connected = true;
+
+                                            npdu2Transport = new Npdu();
+                                            npdu2Transport.type = "N_CONNECT.conf";
+                                            npdu2Transport.routeAddr = respAddr.ToString();
+                                            npdu2Transport.sourceAddr = sourceAddr[0].ToString();
+                                            npdu2Transport.destAddr = destAddr[0].ToString();
+                                            npdu2Transport.connection = outputNo[0].ToString();
+                                            network2Transport.Enqueue(npdu2Transport);
+
+                                            packet4Processing = Packet.encapsulateRequest(outputNo[0], sourceAddr[0], destAddr[0]);
+                                            string packetType = "request";
+                                            byte[] sending = Packet.encapsulateBytes(packet4Processing, packetType);
+
+                                            sentCount = 0;
+                                            rejected = false;
+                                            expired = true;
+                                            accepted = false;
+                                            timer.Start();
+                                            while (!accepted && sentCount < 2)
                                             {
-                                                msg = "N_CONNECT " + transportNpdu.destAddr + " " + transportNpdu.sourceAddr + " route: " + transportNpdu.routeAddr;
-                                                writeFromTransport.WriteLine(msg);
-                                                Form1._UI.write2L_lec(msg);
-
-                                                sourceAddr[0] = (byte)int.Parse(transportNpdu.sourceAddr);
-                                                destAddr[0] = (byte)int.Parse(transportNpdu.destAddr);
-                                                if (sourceAddr[0] % 27 == 0 || int.Parse(transportNpdu.sourceAddr) > 249 || int.Parse(transportNpdu.destAddr) > 249)
-                                                { 
-                                                    disconnected = true;
-                                                    connected = false;
-
-                                                    npdu2Transport = new Npdu();
-                                                    npdu2Transport.type = "N_DISCONNECT.ind";
-                                                    npdu2Transport.routeAddr = respAddr.ToString();
-                                                    npdu2Transport.target = "00000010";
-                                                    npdu2Transport.connection = "255";
-                                                    network2Transport.Enqueue(npdu2Transport);
-                                                }
-                                                else
+                                                if (expired || rejected)
                                                 {
-                                                    connected = true;
-
-                                                    npdu2Transport = new Npdu();
-                                                    npdu2Transport.type = "N_CONNECT.conf";
-                                                    npdu2Transport.routeAddr = respAddr.ToString();
-                                                    npdu2Transport.sourceAddr = sourceAddr[0].ToString();
-                                                    npdu2Transport.destAddr = destAddr[0].ToString();
-                                                    npdu2Transport.connection = outputNo[0].ToString();
-                                                    network2Transport.Enqueue(npdu2Transport);
-
-                                                    packet4Processing = Packet.encapsulateRequest(outputNo[0], sourceAddr[0], destAddr[0]);
-                                                    string packetType = "request";
-                                                    byte[] sending = Packet.encapsulateBytes(packet4Processing, packetType);
-
-                                                    sentCount = 0;
+                                                    network2PacketProcessing.Enqueue(sending);
+                                                    expired = false;
                                                     rejected = false;
-                                                    expired = true;
-                                                    accepted = false;
-                                                    timer.Start();
-                                                    while (!accepted && sentCount < 2)
-                                                    {
-                                                        if (expired || rejected)
-                                                        {
-                                                            network2PacketProcessing.Enqueue(sending);
-                                                            expired = false;
-                                                            rejected = false;
-                                                            sentCount++;
-                                                        }
-                                                    }
-                                                    timer.Stop();
+                                                    sentCount++;
                                                 }
-                                                break;
                                             }
+                                            timer.Stop();
+                                        }
+                                    }
+                                    else if (transportNpdu.type == "N_DATA.req")
+                                    {
+                                        msg = "N_DATA " + transportNpdu.data;
+                                        writeFromTransport.WriteLine(msg);
+                                        Form1._UI.write2L_lec(msg);
 
-                                        case "N_DATA.req":
+                                        PACKET[] packets4Processing = Packet.encapsulateFullData(transportNpdu.data, outputNo[0], pr);
+                                        foreach (PACKET packet in packets4Processing)
+                                        {
+                                            byte[] sending = Packet.encapsulateDataBytes(packet);
+
+                                            sentCount = 0;
+                                            rejected = false;
+                                            expired = true;
+                                            accepted = false;
+                                            timer.Start();
+                                            while (!accepted && sentCount < 2)
                                             {
-                                                msg = "N_DATA " + transportNpdu.data;
-                                                writeFromTransport.WriteLine(msg);
-                                                Form1._UI.write2L_lec(msg);
-
-                                                PACKET[] packets4Processing = Packet.encapsulateFullData(transportNpdu.data, outputNo[0], pr);
-                                                foreach (PACKET packet in packets4Processing)
+                                                if (expired || rejected)
                                                 {
-                                                    byte[] sending = Packet.encapsulateDataBytes(packet);
-
-                                                    sentCount = 0;
+                                                    network2PacketProcessing.Enqueue(sending);
+                                                    expired = false;
                                                     rejected = false;
-                                                    expired = true;
-                                                    accepted = false;
-                                                    timer.Start();
-                                                    while (!accepted && sentCount < 2)
-                                                    {
-                                                        if (expired || rejected)
-                                                        {
-                                                            network2PacketProcessing.Enqueue(sending);
-                                                            expired = false;
-                                                            rejected = false;
-                                                            sentCount++;
-                                                        }
-                                                    }
-                                                    timer.Stop();
+                                                    sentCount++;
                                                 }
-                                                break;
                                             }
-                                        case "N_DISCONNECT.req":
+                                            timer.Stop();
+                                        }
+                                    }
+                                    else if (transportNpdu.type == "N_DISCONNECT.req")
+                                    {
+                                        msg = "N_DISCONNECT " + transportNpdu.routeAddr;
+                                        writeFromTransport.WriteLine(msg);
+                                        Form1._UI.write2L_lec(msg);
+
+                                        npdu2Transport = new Npdu();
+                                        npdu2Transport.type = "N_DISCONNECT.ind";
+                                        npdu2Transport.routeAddr = respAddr.ToString();
+
+                                        packet4Processing = Packet.encapsulateRelease(outputNo[0], sourceAddr[0], destAddr[0], true);
+                                        string packetType = "release";
+                                        byte[] sending = Packet.encapsulateBytes(packet4Processing, packetType);
+
+                                        sentCount = 0;
+                                        rejected = false;
+                                        expired = true;
+                                        accepted = false;
+                                        timer.Start();
+                                        while (!accepted && sentCount < 2)
+                                        {
+                                            if (expired || rejected)
                                             {
-                                                msg = "N_DISCONNECT " + transportNpdu.routeAddr;
-                                                writeFromTransport.WriteLine(msg);
-                                                Form1._UI.write2L_lec(msg);
-
-                                                npdu2Transport = new Npdu();
-                                                npdu2Transport.type = "N_DISCONNECT.ind";
-                                                npdu2Transport.routeAddr = respAddr.ToString();
-
-                                                packet4Processing = Packet.encapsulateRelease(outputNo[0], sourceAddr[0], destAddr[0], true);
-                                                string packetType = "release";
-                                                byte[] sending = Packet.encapsulateBytes(packet4Processing, packetType);
-
-                                                sentCount = 0;
+                                                network2PacketProcessing.Enqueue(sending);
+                                                expired = false;
                                                 rejected = false;
-                                                expired = true;
-                                                accepted = false;
-                                                timer.Start();
-                                                while (!accepted && sentCount < 2)
-                                                {
-                                                    if (expired || rejected)
-                                                    {
-                                                        network2PacketProcessing.Enqueue(sending);
-                                                        expired = false;
-                                                        rejected = false;
-                                                        sentCount++;
-                                                    }
-                                                }
-                                                timer.Stop();
-                                                break;
+                                                sentCount++;
                                             }
+                                        }
+                                        timer.Stop();
                                     }
                                 }
                             }

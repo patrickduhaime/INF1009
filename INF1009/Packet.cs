@@ -201,7 +201,7 @@ namespace INF1009
         public static byte[] encapsulateBytes(PACKET currentPacket, string type)
         {
             byte[] sending;
-            switch (type)
+            switch(type)
             {
                 case "request":
                 case "established":
@@ -227,8 +227,8 @@ namespace INF1009
                 default:
                     sending = new byte[0];
                     break;
+                
             }
-
             return sending;
         }
 

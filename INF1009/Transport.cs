@@ -26,7 +26,6 @@ namespace INF1009
     */
     class Transport
     {
-
         private const string S_lec = "s_lec.txt";
         private const string S_ecr = "s_ecr.txt";
         private StreamReader reader;
@@ -141,17 +140,13 @@ namespace INF1009
 
             while (!end && !disconnect)
             {
-               
-                    if ((lineRead = reader.ReadLine()) != null)
-                    {
-                        networkNNpdu = new Npdu();
-
+                if ((lineRead = reader.ReadLine()) != null)
+                {
+                    networkNNpdu = new Npdu();
                     try
                     {
                         valid = false;
-
                         settings = lineRead.Split(' ');
-
                         Form1._UI.write2S_lec(lineRead);
 
                         if (settings[0] == "N_CONNECT")
@@ -176,7 +171,6 @@ namespace INF1009
                             valid = true;
                             disconnect = true;
                         }
-
                         if (valid)
                             transport2Network.Enqueue(networkNNpdu);
                     }
@@ -184,12 +178,11 @@ namespace INF1009
                     {
 
                     }
-                    }
-                    else
-                    {
-                        end = true;
-                    }
-                
+                }
+                else
+                {
+                    end = true;
+                }
             }
         }
 
@@ -259,7 +252,6 @@ namespace INF1009
                 {
 
                 }
-
             }
         }
     }

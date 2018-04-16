@@ -1,11 +1,12 @@
-connection: 5 Connection established 
-connection: 5 dest Address: 1  source Address: 11
+connection: 0 Connection established 
+connection: 0 dest Address: 1  source Address: 11
+
 connection: 5 Connection established 
 connection: 5 dest Address: 47  source Address: 15
-nnection: 3 dest Address: 47  source Address: 15
-connection: 3  disconnected Closed by Client
- 1 Connection established 
-connection: 1  disconnected Closed by Client
+connection: 5 Connection established 
+connection: 6 Connection established 
+connection: 6  disconnected Closed by Client
+nnection: 2  disconnected Closed by Client
 ed 
 connection: 2 dest Address: 12  source Address: 11
 

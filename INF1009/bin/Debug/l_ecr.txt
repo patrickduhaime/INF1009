@@ -2,13 +2,14 @@ N_CONNECT 1 11 route: 1
 N_DATA Start testing INF1009 
 N_CONNECT 47 15 route: 47
 N_DATA negative Acknoledgment 
-Acknoledgment 
-N_DISCONNECT 47
-route: 254
+N_CONNECT 200 27 route: 254
 N_CONNECT 200 500 route: -1
 N_CONNECT 9 19 route: 9
 N_CONNECT 12 13 route: 12
-of 13 - connection declined by destination 
+awnser 
+N_DISCONNECT 9
+N_CONNECT 12 13 route: 12
+nation 
 ltiple of 13 - connection declined by destination 
 
  destination 
