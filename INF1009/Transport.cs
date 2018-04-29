@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Collections;
 using System;
+using System.Security.AccessControl;
 
 namespace INF1009
 {
@@ -27,18 +28,16 @@ namespace INF1009
     class Transport
     {
         private const string S_lec = "s_lec.txt";
-        private const string T_lec = "t_lec.txt";
         private const string S_ecr = "s_ecr.txt";
         private StreamReader reader;
-        private StreamReader T_reader;
         private StreamWriter writer;
         private FileStream inputFile;
-        private FileStream T_inputFile;
         private FileStream outputFile;
         private Queue transport2Network;
         private Queue network2Transport;
         string msg;
         bool disconnect;
+        bool end;
         ArrayList connected;
 
         /**
@@ -59,6 +58,7 @@ namespace INF1009
             Start();
         }
 
+ 
         /**
         * Methode Start appelé au demarrage
         */
@@ -70,11 +70,40 @@ namespace INF1009
         }
 
         /**
+        * Methode Stop appelé au changement du fichier source
+        */
+        public void Stop()
+        {
+            end = true;
+            inputFile.Close();
+            outputFile.Close();
+            reader.Close();
+            System.IO.File.WriteAllText(S_lec, string.Empty);
+        }
+
+        /**
+        * Methode Restart appelé au changement du fichier source
+        */
+        public void Restart()
+        {
+            end = false;
+
+            inputFile = new FileStream(S_lec, FileMode.OpenOrCreate, FileAccess.Read);
+            reader = new StreamReader(inputFile);
+            outputFile = new FileStream(S_ecr, FileMode.OpenOrCreate, FileAccess.Write);
+            writer = new StreamWriter(outputFile);
+
+            resetFiles();
+            Start();
+        }
+
+        /**
         * Methode resetFiles qui remets différents paramètres a leurs 
         * valeurs initiales pour la lecture et l'écriture des fichiers.
         */
         public void resetFiles()
         {
+
             inputFile.Position = 0;
             outputFile.Position = 0;
             connected.Clear();
@@ -184,7 +213,8 @@ namespace INF1009
             string lineRead;
             Npdu networkNNpdu;
             string[] settings;
-            bool valid, end = false;
+            bool valid;
+            end = false;
 
             while (!end && !disconnect)
             {
@@ -234,66 +264,6 @@ namespace INF1009
             }
         }
 
-        public void networkTest()
-        {
-
-            T_inputFile = new FileStream(T_lec, FileMode.OpenOrCreate, FileAccess.Read);
-            T_reader = new StreamReader(T_inputFile);
-
-            string lineRead;
-            Npdu networkNNpdu;
-            string[] settings;
-            bool valid, end = false;
-
-            while (!end && !disconnect)
-            {
-                if ((lineRead = T_reader.ReadLine()) != null)
-                {
-                    networkNNpdu = new Npdu();
-                    try
-                    {
-                        valid = false;
-                        settings = lineRead.Split(' ');
-                        Form1._UI.write2S_lec(lineRead);
-
-                        if (settings[0] == "N_CONNECT")
-                        {
-                            networkNNpdu.type = "N_CONNECT.req";
-                            networkNNpdu.destAddr = settings[1];
-                            networkNNpdu.sourceAddr = settings[2];
-                            networkNNpdu.routeAddr = setRouteAddress(settings[1], settings[2]);
-                            valid = true;
-                        }
-                        else if (settings[0] == "N_DATA")
-                        {
-                            networkNNpdu.type = "N_DATA.req";
-                            for (int i = 1; i < settings.Length; i++)
-                                networkNNpdu.data += settings[i] + " ";
-                            valid = true;
-                        }
-                        else if (settings[0] == "N_DISCONNECT")
-                        {
-                            networkNNpdu.type = "N_DISCONNECT.req";
-                            networkNNpdu.routeAddr = settings[1];
-                            valid = true;
-                            disconnect = true;
-                        }
-                        if (valid)
-                            transport2Network.Enqueue(networkNNpdu);
-                    }
-                    catch (ThreadAbortException)
-                    {
-
-                    }
-                }
-                else
-                {
-                    end = true;
-                }
-            }
-            T_reader.Close();
-            T_inputFile.Close();
-        }
 
         /**
         * Methode networkRead (lire_de_reseau) qui verifie si la file network2Transport
@@ -302,7 +272,7 @@ namespace INF1009
         */
         public void networkRead()
         {
-            while (true)
+            while (!end)
             {
                 try
                 {

@@ -42,6 +42,7 @@
             this.buttonGenerate = new System.Windows.Forms.Button();
             this.richTextBoxGen = new System.Windows.Forms.RichTextBox();
             this.buttonSend2File = new System.Windows.Forms.Button();
+            this.buttonTest = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonStart
@@ -172,7 +173,7 @@
             // buttonSend2File
             // 
             this.buttonSend2File.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonSend2File.Location = new System.Drawing.Point(703, 171);
+            this.buttonSend2File.Location = new System.Drawing.Point(703, 209);
             this.buttonSend2File.Name = "buttonSend2File";
             this.buttonSend2File.Size = new System.Drawing.Size(158, 23);
             this.buttonSend2File.TabIndex = 13;
@@ -180,11 +181,23 @@
             this.buttonSend2File.UseVisualStyleBackColor = true;
             this.buttonSend2File.Click += new System.EventHandler(this.buttonSend2File_Click);
             // 
+            // buttonTest
+            // 
+            this.buttonTest.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonTest.Location = new System.Drawing.Point(703, 170);
+            this.buttonTest.Name = "buttonTest";
+            this.buttonTest.Size = new System.Drawing.Size(158, 23);
+            this.buttonTest.TabIndex = 14;
+            this.buttonTest.Text = "Load Test File";
+            this.buttonTest.UseVisualStyleBackColor = true;
+            this.buttonTest.Click += new System.EventHandler(this.buttonTest_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(873, 491);
+            this.Controls.Add(this.buttonTest);
             this.Controls.Add(this.buttonSend2File);
             this.Controls.Add(this.richTextBoxGen);
             this.Controls.Add(this.buttonGenerate);
@@ -223,6 +236,7 @@
         private System.Windows.Forms.Button buttonGenerate;
         private System.Windows.Forms.RichTextBox richTextBoxGen;
         private System.Windows.Forms.Button buttonSend2File;
+        private System.Windows.Forms.Button buttonTest;
     }
 }
 

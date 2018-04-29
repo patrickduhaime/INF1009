@@ -1,27 +1,24 @@
 N_CONNECT  dest Address :1 source Address: 11
 N_DATA  transferring network data
 N_CONNECT  dest Address :47 source Address: 15
-Closed by Client
-N_CONNECT  dest Address :47 source Address: 15
-N_DISCONNECT Closed by Client
 N_DATA  transferring network data
 N_DATA  transferring network data
 N_DISCONNECT Closed by Client
 N_DISCONNECT Closed by Client
-
+N_CONNECT  dest Address :58 source Address: 217
 N_DATA  transferring network data
-
-ress :12 source Address: 11
+N_DATA  transferring network data
+N_DATA  transferring network data
+N_DATA  transferring network data
 N_DATA  transferring network data
 N_DATA  transferring network data
 N_DISCONNECT Closed by Client
+TA  transferring network data
+N_DATA  transferring network data
+N_DATA  transferring network data
 N_DATA  transferring network data
 N_DISCONNECT Closed by Client
-ng network data
-N_DATA  transferring network data
-N_DATA  transferring network data
-N_DATA  transferring network data
-N_DATA  transferring network data
+ATA  transferring network data
 N_DATA  transferring network data
 N_DISCONNECT Closed by Client
 ta

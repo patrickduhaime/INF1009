@@ -258,7 +258,7 @@ namespace INF1009
                 currentPacket.destAddr = received[3];
                 currentPacket.target = received[4];
             }
-            else if (received.Length == 0) ;
+            else if (received.Length == 0);
             else
             {
                 currentPacket.connectionNumber = received[0];

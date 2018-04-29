@@ -2,13 +2,13 @@
 using System.Windows.Forms;
 using System.Collections;
 using System.Threading;
+using System.IO;
 
 namespace INF1009
 {
     public partial class Form1 : Form
     {
         public static Form1 _UI;
-        private int nbclk = 0;
         private int nbTest = 1;
         private static Queue N2TQ = new Queue();
         private static Queue N2TQS = Queue.Synchronized(N2TQ);
@@ -22,6 +22,8 @@ namespace INF1009
         private Network network = new Network(ref T2NQS, ref N2TQS, ref PP2NQS, ref N2PPQS);
         private Transport transport = new Transport(ref T2NQS, ref N2TQS);
         private Thread networkWriteThread, transportWriteThread, transportReadThread, networkReadThread, processingThread;
+        private const string S_lec = "s_lec.txt";
+        private string d_msg;
         delegate void UIDisplayText(string text);
 
         public Form1()
@@ -61,9 +63,7 @@ namespace INF1009
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            nbclk++;
-            if (nbclk > 6)
-                buttonStart.Enabled = false;
+
             try
             {
                 reset();
@@ -96,15 +96,14 @@ namespace INF1009
 
         private void buttonReset_Click(object sender, EventArgs e)
         {
-            buttonStart.Enabled = true;
-            nbclk = 0;
+            transport.Stop();
             rtbL_ecr.Clear();
             rtbL_lec.Clear();
             rtbS_ecr.Clear();
             rtbS_lec.Clear();
+            transport.Restart();
             reset();
             network.resetFiles();
-            transport.resetFiles();
         }
 
         private void buttonQuit_Click(object sender, EventArgs e)
@@ -134,18 +133,47 @@ namespace INF1009
             int intDest = Int32.Parse(dest);
             string source = transport.setSourceAddress(intDest);
 
-            richTextBoxGen.AppendText("N_CONNECT " + dest + " " + source + "\n");
-            richTextBoxGen.AppendText("N_DATA test no.: " + nbTest + "\n");
-            richTextBoxGen.AppendText("N_DISCONNECT " + dest + " " + source + "\n");
+            d_msg = "N_CONNECT " + dest + " " + source + "\n" +
+                    "N_DATA test no.: " + nbTest + "\n" +
+                    "N_DISCONNECT " + dest + " " + source + "\n";
+
+            richTextBoxGen.AppendText(d_msg);
+            
         }
 
         private void buttonSend2File_Click(object sender, EventArgs e)
         {
+            transport.Stop();
+            File.AppendAllText(S_lec, d_msg + Environment.NewLine);
+
             richTextBoxGen.Clear();
             nbTest++;
+            transport.Restart();
+        }
 
-            richTextBoxGen.SaveFile("t_lec.txt");
-            transport.networkTest();
+        private void buttonTest_Click(object sender, EventArgs e)
+        {
+            d_msg = "N_CONNECT 1 11\n" +
+                    "N_DATA Start testing INF1009\n" +
+                    "N_DISCONNECT 1 11\n" +
+                    "N_CONNECT 47 15\n" +
+                    "N_DATA negative Acknoledgment\n" +
+                    "N_DISCONNECT 47 15\n" +
+                    "N_CONNECT 200 27\n" +
+                    "N_DATA declined by Network\n" +
+                    "N_DISCONNECT 200 27\n" +
+                    "N_CONNECT 200 500\n" +
+                    "N_DATA declined by Network - no route\n" +
+                    "N_DISCONNECT 200 500\n" +
+                    "N_CONNECT 9 19\n" +
+                    "N_DATA multiple of 19 - no awnser\n" +
+                    "N_DISCONNECT 9 19\n" +
+                    "N_CONNECT 12 13\n" +
+                    "N_DATA multiple of 13 - connection declined by destination\n" +
+                    "N_DISCONNECT 12 13\n" +
+                    "N_CONNECT 58 217\n" +
+                    "N_DATA This is the last test, this program was written for the recognition of the achievements of Patrick Duhaime for the course INF1009 ...\n" +
+                    "N_DISCONNECT 58 217\n";
         }
 
         public void write2L_lec(string text)
