@@ -268,7 +268,7 @@ namespace INF1009
 
                 currentPacket.dataArray = temp;
             }
-
+              
             return currentPacket;
         }
 

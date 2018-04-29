@@ -24,6 +24,7 @@ namespace INF1009
         private Thread networkWriteThread, transportWriteThread, transportReadThread, networkReadThread, processingThread;
         private const string S_lec = "s_lec.txt";
         private string d_msg;
+        private string d_msgType;
         delegate void UIDisplayText(string text);
 
         public Form1()
@@ -63,7 +64,7 @@ namespace INF1009
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-
+            richTextBoxGen.Clear();
             try
             {
                 reset();
@@ -96,6 +97,7 @@ namespace INF1009
 
         private void buttonReset_Click(object sender, EventArgs e)
         {
+            nbTest = 1;
             transport.Stop();
             rtbL_ecr.Clear();
             rtbL_lec.Clear();
@@ -132,6 +134,7 @@ namespace INF1009
             string dest = transport.setDestAddress();
             int intDest = Int32.Parse(dest);
             string source = transport.setSourceAddress(intDest);
+            d_msgType = "GenTest";
 
             d_msg = "N_CONNECT " + dest + " " + source + "\n" +
                     "N_DATA test no.: " + nbTest + "\n" +
@@ -143,16 +146,22 @@ namespace INF1009
 
         private void buttonSend2File_Click(object sender, EventArgs e)
         {
+            if (d_msgType == "GenTest")
+                richTextBoxGen.AppendText("\n  Test sent to file !");
+            else if (d_msgType == "TestFile")
+                richTextBoxGen.AppendText("\n  Test file sent !");
             transport.Stop();
             File.AppendAllText(S_lec, d_msg + Environment.NewLine);
-
-            richTextBoxGen.Clear();
             nbTest++;
             transport.Restart();
         }
 
         private void buttonTest_Click(object sender, EventArgs e)
         {
+            richTextBoxGen.Clear();
+            richTextBoxGen.AppendText("\n  Test file loaded !");
+            d_msgType = "TestFile";
+
             d_msg = "N_CONNECT 1 11\n" +
                     "N_DATA Start testing INF1009\n" +
                     "N_DISCONNECT 1 11\n" +

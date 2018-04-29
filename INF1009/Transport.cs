@@ -87,12 +87,10 @@ namespace INF1009
         public void Restart()
         {
             end = false;
-
             inputFile = new FileStream(S_lec, FileMode.OpenOrCreate, FileAccess.Read);
             reader = new StreamReader(inputFile);
             outputFile = new FileStream(S_ecr, FileMode.OpenOrCreate, FileAccess.Write);
             writer = new StreamWriter(outputFile);
-
             resetFiles();
             Start();
         }
@@ -154,51 +152,6 @@ namespace INF1009
             return result;
         }
 
-        /**
-        * Methode setRouteAddress definit une addresse de routage selon 
-        * l'enonce de travail. Par contre cette adresse n'est pas utilise
-        * par le programme, la methode et la variable de routage ne 
-        * servent pas, j'ai donc ecris la route dans une variable du Npdu
-        */
-        private string setRouteAddress(string dest, string source)
-        {
-            string result = null;
-
-            int intResult = -1;
-            int intSource = Int32.Parse(source);
-            int intDest = Int32.Parse(dest);
-
-            if (intSource >= 0 && intSource <= 99)
-            {
-                if (intDest >= 0 && intDest <= 99)
-                    intResult = intDest;
-                else if (intDest >= 100 && intDest <= 199)
-                    intResult = 255;
-                else if (intDest >= 200 && intDest <= 249)
-                    intResult = 254;
-            }
-            else if (intSource >= 100 && intSource <= 199)
-            {
-                if (intDest >= 0 && intDest <= 99)
-                    intResult = 250;
-                else if (intDest >= 100 && intDest <= 199)
-                    intResult = intDest;
-                else if (intDest >= 200 && intDest <= 249)
-                    intResult = 253;
-            }
-            else if (intSource >= 200 && intSource <= 249)
-            {
-                if (intDest >= 0 && intDest <= 99)
-                    intResult = 251;
-                else if (intDest >= 100 && intDest <= 199)
-                    intResult = 252;
-                else if (intDest >= 200 && intDest <= 249)
-                    intResult = intDest;
-            }
-
-            result = result + intResult;
-            return result;
-        }
 
         /**
         * Methode networkWrite (ecrire_vers_reseau) qui lit le fichier s_lec.txt 
@@ -232,7 +185,7 @@ namespace INF1009
                             networkNNpdu.type = "N_CONNECT.req";
                             networkNNpdu.destAddr = settings[1];
                             networkNNpdu.sourceAddr = settings[2];
-                            networkNNpdu.routeAddr = setRouteAddress(settings[1], settings[2]);
+                            networkNNpdu.routeAddr = "";
                             valid = true;
                         }
                         else if (settings[0] == "N_DATA")

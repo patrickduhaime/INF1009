@@ -18,7 +18,7 @@ namespace INF1009
         private FileStream file2Transport;
         private StreamWriter writeFromTransport;
         private StreamWriter write2Transport;
-        private int respAddr, sentCount;
+        private int sentCount;
         byte[] sourceAddr;
         byte[] destAddr;
         byte[] outputNo;
@@ -59,7 +59,6 @@ namespace INF1009
             outputNo = new byte[1];
             newConnection(outputNo);
 
-            respAddr = rnd.Next();
             pr = 0;
             receivedData = "";
             disconnected = false;
@@ -159,14 +158,53 @@ namespace INF1009
                                 else
                                 {
                                     if (transportNpdu.type == "N_CONNECT.req")
-
+                                        
                                     {
-                                        msg = "N_CONNECT " + transportNpdu.destAddr + " " + transportNpdu.sourceAddr + " route: " + transportNpdu.routeAddr;
+                                        int intSource = int.Parse(transportNpdu.sourceAddr);
+                                        int intDest = int.Parse(transportNpdu.destAddr);
+                                        sourceAddr[0] = (byte)intSource;
+                                        destAddr[0] = (byte)intDest;
+
+                                        if (intSource > 249 || intDest > 249)
+                                        {
+                                            transportNpdu.routeAddr = " Error, not found !";
+                                        }
+                                        else
+                                        {
+                                            if (intSource >= 0 && intSource <= 99)
+                                            {
+                                                if (intDest >= 0 && intDest <= 99)
+                                                    transportNpdu.routeAddr = "" + intDest;
+                                                else if (intDest >= 100 && intDest <= 199)
+                                                    transportNpdu.routeAddr = "" + 255;
+                                                else if (intDest >= 200 && intDest <= 249)
+                                                    transportNpdu.routeAddr = "" + 254;
+                                            }
+                                            else if (intSource >= 100 && intSource <= 199)
+                                            {
+                                                if (intDest >= 0 && intDest <= 99)
+                                                    transportNpdu.routeAddr = "" + 250;
+                                                else if (intDest >= 100 && intDest <= 199)
+                                                    transportNpdu.routeAddr = "" + intDest;
+                                                else if (intDest >= 200 && intDest <= 249)
+                                                    transportNpdu.routeAddr = "" + 253;
+                                            }
+                                            else if (intSource >= 200 && intSource <= 249)
+                                            {
+                                                if (intDest >= 0 && intDest <= 99)
+                                                    transportNpdu.routeAddr = "" + 251;
+                                                else if (intDest >= 100 && intDest <= 199)
+                                                    transportNpdu.routeAddr = "" + 252;
+                                                else if (intDest >= 200 && intDest <= 249)
+                                                    transportNpdu.routeAddr = "" + intDest;
+                                            }
+
+                                        }
+
+                                        msg = "N_CONNECT " + transportNpdu.destAddr + " " + transportNpdu.sourceAddr + "  route:" + transportNpdu.routeAddr;
                                         writeFromTransport.WriteLine(msg);
                                         Form1._UI.write2L_lec(msg);
 
-                                        sourceAddr[0] = (byte)int.Parse(transportNpdu.sourceAddr);
-                                        destAddr[0] = (byte)int.Parse(transportNpdu.destAddr);
                                         if (sourceAddr[0] % 27 == 0 || int.Parse(transportNpdu.sourceAddr) > 249 || int.Parse(transportNpdu.destAddr) > 249)
                                         {
                                             disconnected = true;
@@ -174,7 +212,6 @@ namespace INF1009
 
                                             npdu2Transport = new Npdu();
                                             npdu2Transport.type = "N_DISCONNECT.ind";
-                                            npdu2Transport.routeAddr = respAddr.ToString();
                                             npdu2Transport.target = "00000010";
                                             npdu2Transport.connection = "255";
                                             network2Transport.Enqueue(npdu2Transport);
@@ -185,7 +222,6 @@ namespace INF1009
 
                                             npdu2Transport = new Npdu();
                                             npdu2Transport.type = "N_CONNECT.conf";
-                                            npdu2Transport.routeAddr = respAddr.ToString();
                                             npdu2Transport.sourceAddr = sourceAddr[0].ToString();
                                             npdu2Transport.destAddr = destAddr[0].ToString();
                                             npdu2Transport.connection = outputNo[0].ToString();
@@ -250,7 +286,6 @@ namespace INF1009
 
                                         npdu2Transport = new Npdu();
                                         npdu2Transport.type = "N_DISCONNECT.ind";
-                                        npdu2Transport.routeAddr = respAddr.ToString();
 
                                         packet4Processing = Packet.encapsulateRelease(outputNo[0], sourceAddr[0], destAddr[0], true);
                                         string packetType = "release";

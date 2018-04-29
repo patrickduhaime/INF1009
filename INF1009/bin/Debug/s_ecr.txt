@@ -1,14 +1,16 @@
-connection: 5 Connection established 
-connection: 5 dest Address: 1  source Address: 11
-connection: 3 Connection established 
-connection: 3 dest Address: 47  source Address: 15
-connection: 7 Connection established 
-connection: 7  disconnected Closed by Client
-connection: 0 Connection established 
-connection: 0  disconnected Closed by Client
-lient
 connection: 1 Connection established 
-connection: 1  disconnected Closed by Client
+connection: 1 dest Address: 1  source Address: 11
+connection: 6 Connection established 
+connection: 6 dest Address: 47  source Address: 15
+connection: 6  disconnected Closed by Client
+connection: 0 Connection established 
+
+
+connection: 0  disconnected Closed by Client
+connection: 5 Connection established 
+connection: 5  disconnected Closed by Client
+ient
+: 0  disconnected Closed by Client
 connection: 2 Connection established 
 connection: 2 dest Address: 58  source Address: 217
 connection: 2  disconnected Closed by Client
