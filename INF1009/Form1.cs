@@ -166,7 +166,7 @@ namespace INF1009
                     "N_DATA Start testing INF1009\n" +
                     "N_DISCONNECT 1 11\n" +
                     "N_CONNECT 47 15\n" +
-                    "N_DATA negative Acknoledgment\n" +
+                    "N_DATA negative Acknoledgment\n" + 
                     "N_DISCONNECT 47 15\n" +
                     "N_CONNECT 200 27\n" +
                     "N_DATA declined by Network\n" +
@@ -175,7 +175,7 @@ namespace INF1009
                     "N_DATA declined by Network - no route\n" +
                     "N_DISCONNECT 200 500\n" +
                     "N_CONNECT 9 19\n" +
-                    "N_DATA multiple of 19 - no awnser\n" +
+                    "N_DATA no awnser\n" +
                     "N_DISCONNECT 9 19\n" +
                     "N_CONNECT 12 13\n" +
                     "N_DATA multiple of 13 - connection declined by destination\n" +

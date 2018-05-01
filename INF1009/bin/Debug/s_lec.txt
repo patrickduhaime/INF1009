@@ -11,7 +11,7 @@ N_CONNECT 200 500
 N_DATA declined by Network - no route
 N_DISCONNECT 200 500
 N_CONNECT 9 19
-N_DATA multiple of 19 - no awnser
+N_DATA no awnser
 N_DISCONNECT 9 19
 N_CONNECT 12 13
 N_DATA multiple of 13 - connection declined by destination

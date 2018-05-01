@@ -72,8 +72,8 @@ namespace INF1009
                                 BitArray defectBits = new BitArray(new byte[] { defect });
 
                             byte temp = Packet.ConvertToByte(ps);
-                            BitArray leps = new BitArray(new byte[] { temp });
-                                if (Packet.isEqualBitArrays(defectBits, leps))
+                            BitArray current = new BitArray(new byte[] { temp });
+                                if (Packet.isEqualBitArrays(defectBits, current))
                                 {
                                     returnPacket = Packet.encapsulateAcknowledge(packetFromNetwork[0], Packet.ConvertToByte(pr), false);
                                     packet2Network = Packet.encapsulateBytes(returnPacket, "NACK");
@@ -90,7 +90,7 @@ namespace INF1009
                         else
                         {
                             returnPacket = Packet.encapsulateAcknowledge(packetFromNetwork[0], Packet.ConvertToByte(pr), false);
-                            packet2Network = Packet.encapsulateBytes(returnPacket, "NACK");
+                            packet2Network = Packet.encapsulateBytes(returnPacket, "release");
                             packetProcessing2Network.Enqueue(packet2Network);
                         }
                         
@@ -112,6 +112,13 @@ namespace INF1009
                             }
 
                             packetProcessing2Network.Enqueue(packet2Network);
+                        }
+                        else
+                        {
+                        returnPacket = Packet.encapsulateRelease(packetFromNetwork[0], packetFromNetwork[2], packetFromNetwork[3], true);
+                        packet2Network = Packet.encapsulateBytes(returnPacket, "release");
+
+                        packetProcessing2Network.Enqueue(packet2Network);
                         }
                     }
                     else if (packetFromNetwork.Length == 5)

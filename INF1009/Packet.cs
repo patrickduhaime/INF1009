@@ -224,6 +224,11 @@ namespace INF1009
                     sending[0] = currentPacket.connectionNumber;
                     sending[1] = currentPacket.target;
                     break;
+                case "NACK":
+                    sending = new byte[2];
+                    sending[0] = currentPacket.connectionNumber;
+                    sending[1] = currentPacket.target ;
+                    break;
                 default:
                     sending = new byte[0];
                     break;

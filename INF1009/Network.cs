@@ -86,43 +86,41 @@ namespace INF1009
                                 byte[] received = (byte[])packetProcessing2Network.Dequeue();
                                 PACKET receivedPacket = Packet.decapBytes(received);
                                 Npdu _4Transport = Packet.decapPacket(receivedPacket);
-                                if (_4Transport.type == "WrongPacketFormat")
+
+                                switch (_4Transport.type)
                                 {
-                                    msg = "Wrong Packet Format";
-                                }
-                                else if (_4Transport.type == "NACK")
-                                {
-                                    msg = "NACK  negative Acknowledgment  :" + receivedPacket.packetType.ToString();
-                                    rejected = true;
-                                }
-                                else if (_4Transport.type == "ACK")
-                                {
-                                    msg = "ACK  positive Acknowledgment :" + receivedPacket.packetType.ToString();
-                                    accepted = true;
-                                }
-                                else if(_4Transport.type == "N_DISCONNECT.ind")
-                                {
-                                    msg = "N_DISCONNECT " + _4Transport.target;
-                                    network2Transport.Enqueue(_4Transport);
-                                    accepted = true;
-                                    disconnected = true;
-                                }
-                                else if(_4Transport.type == "N_CONNECT.ind")
-                                {
-                                    msg = "N_CONNECT  dest Address :" + _4Transport.destAddr + " source Address: " + _4Transport.sourceAddr;
-                                    network2Transport.Enqueue(_4Transport);
-                                    accepted = true;
-                                }
-                                else if(_4Transport.type == "N_DATA.ind")
-                                {
-                                    msg = "N_DATA  transferring network data";
-                                    receivedData += _4Transport.data;
-                                    if (!_4Transport.flag)
-                                    {
+                                        case "WrongPacketFormat":
+                                        msg = "Wrong Packet Format";
+                                        break;
+                                    case "release":
+                                        msg = "released packet: " + receivedPacket.packetType.ToString();
+                                        rejected = true;
+                                        break;
+                                    
+                                    case "N_DISCONNECT.ind":
+                                        msg = "N_DISCONNECT " + _4Transport.target;
+                                        network2Transport.Enqueue(_4Transport);
+                                        accepted = true;
+                                        disconnected = true;
+                                        break;
+                                    case "N_CONNECT.ind":
+                                        msg = "N_CONNECT  dest Address :" + _4Transport.destAddr + " source Address: " + _4Transport.sourceAddr;
+                                        network2Transport.Enqueue(_4Transport);
+                                        accepted = true;
+                                        break;
+                                    case "N_DATA.ind":
+                                        msg = "N_DATA  transferring network data";
+                                        receivedData += _4Transport.data;
+                                        if (!_4Transport.flag)
+                                        {
                                         _4Transport.data = receivedData;
                                         network2Transport.Enqueue(_4Transport);
-                                    }
+                                        }
+                                        break;
+                                default:
+                                break;
                                 }
+
 
                                 write2Transport.WriteLine(msg);
                                 Form1._UI.write2L_ecr(msg);
@@ -227,9 +225,8 @@ namespace INF1009
                                             npdu2Transport.connection = outputNo[0].ToString();
                                             network2Transport.Enqueue(npdu2Transport);
 
-                                            packet4Processing = Packet.encapsulateRequest(outputNo[0], sourceAddr[0], destAddr[0]);
-                                            string packetType = "request";
-                                            byte[] sending = Packet.encapsulateBytes(packet4Processing, packetType);
+                                            packet4Processing = Packet.encapsulateRequest(outputNo[0], sourceAddr[0], destAddr[0]);                                          
+                                            byte[] sending = Packet.encapsulateBytes(packet4Processing, "request");
 
                                             sentCount = 0;
                                             rejected = false;
